@@ -519,11 +519,11 @@ input:focus~.bg-primary {
 }
 
 .primary.lighten-1 {
-    color: #253f9b !important;
+    color: #2e5c9d !important;
 }
 
 .bg-primary.bg-lighten-1 {
-    background-color: #253f9b !important;
+    background-color: #2e5c9d !important;
 }
 
 .bg-primary.bg-lighten-1.bg-glow {
@@ -532,7 +532,7 @@ input:focus~.bg-primary {
 
 .btn-primary.btn-lighten-1 {
     border-color: #3a44e1 !important;
-    background-color: #253f9b !important;
+    background-color: #2e5c9d !important;
 }
 
 .btn-primary.btn-lighten-1:hover {
@@ -547,50 +547,50 @@ input:focus~.bg-primary {
 }
 
 .btn-outline-primary.btn-outline-lighten-1 {
-    border-color: #253f9b !important;
-    color: #253f9b !important;
+    border-color: #2e5c9d !important;
+    color: #2e5c9d !important;
 }
 
 .btn-outline-primary.btn-outline-lighten-1:hover {
-    background-color: #253f9b !important;
+    background-color: #2e5c9d !important;
 }
 
 input:focus~.bg-primary {
-    box-shadow: 0 0 0 0.075rem #fff, 0 0 0 0.21rem #253f9b !important;
+    box-shadow: 0 0 0 0.075rem #fff, 0 0 0 0.21rem #2e5c9d !important;
 }
 
 .border-primary.border-lighten-1 {
-    border: 1px solid #253f9b !important;
+    border: 1px solid #2e5c9d !important;
 }
 
 .border-top-primary.border-top-lighten-1 {
-    border-top: 1px solid #253f9b !important;
+    border-top: 1px solid #2e5c9d !important;
 }
 
 .border-bottom-primary.border-bottom-lighten-1 {
-    border-bottom: 1px solid #253f9b !important;
+    border-bottom: 1px solid #2e5c9d !important;
 }
 
 .border-left-primary.border-left-lighten-1 {
-    border-left: 1px solid #253f9b !important;
+    border-left: 1px solid #2e5c9d !important;
 }
 
 .border-right-primary.border-right-lighten-1 {
-    border-right: 1px solid #253f9b !important;
+    border-right: 1px solid #2e5c9d !important;
 }
 
 .overlay-primary.overlay-lighten-1 {
-    background: #253f9b;
+    background: #2e5c9d;
     /* The Fallback */
     background: rgba(124, 131, 235, 0.8);
 }
 
 .primary {
-    color: #253f9b !important;
+    color: #2e5c9d !important;
 }
 
 .bg-primary {
-    background-color: #253f9b !important;
+    background-color: #2e5c9d !important;
 }
 
 .bg-primary .card-header,
@@ -603,11 +603,11 @@ input:focus~.bg-primary {
 }
 
 .selectboxit.selectboxit-btn.bg-primary {
-    background-color: #253f9b !important;
+    background-color: #2e5c9d !important;
 }
 
 .alert-primary {
-    border-color: #253f9b !important;
+    border-color: #2e5c9d !important;
     background-color: #a4a9f1 !important;
     color: #141b87 !important;
 }
@@ -617,28 +617,28 @@ input:focus~.bg-primary {
 }
 
 .border-primary {
-    border-color: #253f9b;
+    border-color: #2e5c9d;
 }
 
 .overlay-primary {
-    background: #253f9b;
+    background: #2e5c9d;
     /* The Fallback */
     background: rgba(102, 110, 232, 0.8);
 }
 
 .color-info.primary {
-    background-color: #253f9b !important;
+    background-color: #2e5c9d !important;
 }
 
 .btn-primary {
-    border-color: #253f9b !important;
-    background-color: #253f9b !important;
+    border-color: #2e5c9d !important;
+    background-color: #2e5c9d !important;
     color: #FFFFFF;
 }
 
 .btn-primary:hover {
-    border-color: #253f9b !important;
-    background-color: #253f9b !important;
+    border-color: #2e5c9d !important;
+    background-color: #2e5c9d !important;
     color: #FFF !important;
 }
 
@@ -654,13 +654,13 @@ input:focus~.bg-primary {
 }
 
 .btn-outline-primary {
-    border-color: #253f9b;
+    border-color: #2e5c9d;
     background-color: transparent;
-    color: #253f9b;
+    color: #2e5c9d;
 }
 
 .btn-outline-primary:hover {
-    background-color: #253f9b;
+    background-color: #2e5c9d;
     color: #FFF !important;
 }
 
@@ -670,7 +670,7 @@ input:focus~.bg-primary {
 
 input[type="checkbox"].bg-primary+.custom-control-label:before,
 input[type="radio"].bg-primary+.custom-control-label:before {
-    background-color: #253f9b !important;
+    background-color: #2e5c9d !important;
 }
 
 
@@ -681,34 +681,34 @@ input[type="radio"].bg-primary+.custom-control-label:before {
       } */
 
 input:focus~.bg-primary {
-    box-shadow: 0 0 0 0.075rem #fff, 0 0 0 0.21rem #253f9b !important;
+    box-shadow: 0 0 0 0.075rem #fff, 0 0 0 0.21rem #2e5c9d !important;
 }
 
 .border-primary {
-    border: 1px solid #253f9b !important;
+    border: 1px solid #2e5c9d !important;
 }
 
 .border-top-primary {
-    border-top: 1px solid #253f9b;
+    border-top: 1px solid #2e5c9d;
 }
 
 .border-bottom-primary {
-    border-bottom: 1px solid #253f9b;
+    border-bottom: 1px solid #2e5c9d;
 }
 
 .border-left-primary {
-    border-left: 1px solid #253f9b;
+    border-left: 1px solid #2e5c9d;
 }
 
 .border-right-primary {
-    border-right: 1px solid #253f9b;
+    border-right: 1px solid #2e5c9d;
 }
 
 
 /* Bullet primary */
 
 .bullet.bullet-primary {
-    background-color: #253f9b;
+    background-color: #2e5c9d;
 }
 
 .primary.darken-1 {
