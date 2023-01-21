@@ -22,8 +22,6 @@ return new class extends Migration
             $table->string('password');
             $table->enum('usertype',[1,2,3])->default(3);
             $table->enum('status',array_keys(User::$status))->default(1);
-            $table->integer('selected_carpark')->nullable();
-            $table->integer('selected_user')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

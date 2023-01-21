@@ -10,7 +10,7 @@ Route::get('/', function () {
     return redirect()->route('home');
 });
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware(['auth', 'permitted']);
 
