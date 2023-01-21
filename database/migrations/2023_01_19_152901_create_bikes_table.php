@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('bikes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('store');
+            $table->unsignedBigInteger('owner');
             $table->string('mac_address');
             $table->string('reference');
             $table->enum('status', [1, 2])->comment('1-Active / 2-Inactive');

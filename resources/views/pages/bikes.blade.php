@@ -14,7 +14,7 @@
                     <div class="col-md-8">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Ships List</h4>
+                                <h4 class="card-title">Bikes List</h4>
                                 <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                                 <div class="heading-elements">
                                     <ul class="list-inline mb-0">
@@ -29,9 +29,7 @@
                                         <table class="table w-100" id="datatable">
                                             <thead>
                                                 <tr>
-                                                    <th>User</th>
-                                                    <th>Name</th>
-                                                    <th>Ship No</th>
+                                                    <th>Reference</th>
                                                     <th>Mac Address</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
@@ -44,8 +42,8 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <form autocomplete="off" action="{{ route('admin.ships.enroll') }}"
-                            enctype="multipart/form-data" method="POST" id="enrollment_form">
+                        <form autocomplete="off" action="{{ route('admin.bikes.enroll') }}" enctype="multipart/form-data"
+                            method="POST" id="enrollment_form">
                             @csrf
                             <input type="hidden" id="isnew" name="isnew"
                                 value="{{ old('isnew') ? old('isnew') : '1' }}">
@@ -53,7 +51,7 @@
                                 value="{{ old('record') ? old('record') : '' }}">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">Add/Edit Ship</h4>
+                                    <h4 class="card-title">Add/Edit</h4>
                                     <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                                     <div class="heading-elements">
                                         <ul class="list-inline mb-0">
@@ -68,51 +66,23 @@
                                             <div class="col-md-12">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <label for="name"><small class="text-dark">
-                                                                Name{!! required_mark() !!}</small></label>
-                                                        <input value="{{ old('name') }}" type="text" name="name"
-                                                            id="name" class="form-control">
-                                                        @error('name')
+                                                        <label for="reference"><small class="text-dark">
+                                                                Reference{!! required_mark() !!}</small></label>
+                                                        <input value="{{ old('reference') }}" type="text" name="reference"
+                                                            id="reference" class="form-control">
+                                                        @error('reference')
                                                             <span class="text-danger"><small>{{ $message }}</small></span>
                                                         @enderror
                                                     </div>
                                                 </div>
                                                 <div class="row mt-1">
                                                     <div class="col-md-12">
-                                                        <label for="no"><small class="text-dark">
-                                                                Ship Number{!! required_mark() !!}</small></label>
-                                                        <input value="{{ old('no') }}" type="text" name="no"
-                                                            id="no" class="form-control">
-                                                        @error('no')
+                                                        <label for="mac_address"><small class="text-dark">
+                                                                Mac Address{!! required_mark() !!}</small></label>
+                                                        <input value="{{ old('mac_address') }}" type="text" name="mac_address"
+                                                            id="mac_address" class="form-control">
+                                                        @error('mac_address')
                                                             <span class="text-danger"><small>{{ $message }}</small></span>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-1">
-                                                    <div class="col-md-12">
-                                                        <label for="mac"><small class="text-dark">
-                                                                Ship Device Mac{!! required_mark() !!}</small></label>
-                                                        <input value="{{ old('mac') }}" type="text" name="mac"
-                                                            id="mac" class="form-control">
-                                                        @error('mac')
-                                                            <span class="text-danger"><small>{{ $message }}</small></span>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-1">
-                                                    <div class="col-md-12">
-                                                        <label for="user"><small>User
-                                                                {!! required_mark() !!}</small></label>
-                                                        <select class="form-control" name="user" id="user">
-                                                            <option value="none">Select</option>
-                                                            @foreach ($users as $user)
-                                                                <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
-                                                            @endforeach
-                                                        </select>
-                                                        @error('user')
-                                                            <span class="text-danger">
-                                                                <small>{{ $message }}</small>
-                                                            </span>
                                                         @enderror
                                                     </div>
                                                 </div>
@@ -178,19 +148,12 @@
             ],
             serverSide: true,
             responsive: true,
-            ajax: "{{ route('admin.ships.list') }}",
-            columns: [
-                {
-                    name: 'user'
+            ajax: "{{ route('admin.bikes.list') }}",
+            columns: [{
+                    name: 'reference'
                 },
                 {
-                    name: 'name'
-                },
-                {
-                    name: 'no'
-                },
-                {
-                    name: 'mac'
+                    name: 'mac_address'
                 },
                 {
                     name: 'status',
@@ -212,15 +175,13 @@
             showAlert('Are you sure to edit this record ?', function() {
                 $.ajax({
                     type: "GET",
-                    url: "{{ route('admin.ships.get.one') }}",
+                    url: "{{ route('admin.bikes.get.one') }}",
                     data: {
                         'id': id
                     },
                     success: function(response) {
-                        $('#name').val(response.name);
-                        $('#no').val(response.no);
-                        $('#mac').val(response.mac);
-                        $('#status').val(response.status);
+                        $('#reference').val(response.reference);
+                        $('#mac_address').val(response.mac_address);
                         $('#isnew').val('2').trigger('change');
                         $('#record').val(response.id);
                     }
@@ -230,7 +191,7 @@
 
         function doDelete(id) {
             showAlert('Are you sure to delete this record ?', function() {
-                window.location = "{{ route('admin.ships.delete.one') }}?id=" + id;
+                window.location = "{{ route('admin.bikes.delete.one') }}?id=" + id;
             });
         }
 

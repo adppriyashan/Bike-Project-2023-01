@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\BikeController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\StoreController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserTypeController;
 use Illuminate\Support\Facades\Auth;
@@ -31,4 +33,20 @@ Route::prefix('/usertypes')->group(function () {
     Route::get('/list', [UserTypeController::class, 'list'])->name('admin.usertypes.list')->middleware(['auth']);
     Route::get('/get', [UserTypeController::class, 'getOne'])->name('admin.usertypes.get.one')->middleware(['auth']);
     Route::get('/delete', [UserTypeController::class, 'deleteOne'])->name('admin.usertypes.delete.one')->middleware(['auth']);
+});
+
+Route::prefix('/stores')->group(function () {
+    Route::get('/', [StoreController::class, 'index'])->middleware(['auth', 'permitted']);
+    Route::post('/enroll', [StoreController::class, 'enroll'])->name('admin.stores.enroll')->middleware(['auth']);
+    Route::get('/list', [StoreController::class, 'list'])->name('admin.stores.list')->middleware(['auth']);
+    Route::get('/get', [StoreController::class, 'getOne'])->name('admin.stores.get.one')->middleware(['auth']);
+    Route::get('/delete', [StoreController::class, 'deleteOne'])->name('admin.stores.delete.one')->middleware(['auth']);
+});
+
+Route::prefix('/bikes')->group(function () {
+    Route::get('/', [BikeController::class, 'index'])->middleware(['auth', 'permitted']);
+    Route::post('/enroll', [BikeController::class, 'enroll'])->name('admin.bikes.enroll')->middleware(['auth']);
+    Route::get('/list', [BikeController::class, 'list'])->name('admin.bikes.list')->middleware(['auth']);
+    Route::get('/get', [BikeController::class, 'getOne'])->name('admin.bikes.get.one')->middleware(['auth']);
+    Route::get('/delete', [BikeController::class, 'deleteOne'])->name('admin.bikes.delete.one')->middleware(['auth']);
 });

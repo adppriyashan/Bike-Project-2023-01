@@ -6,18 +6,18 @@
 
                 </li>
 
-                @if (doPermitted('//ships'))
-                    <li class=" nav-item"><a href="/ships"><i
-                                class="la la-ship"></i><span class="menu-title"
-                                data-i18n="Apps">Ships</span></a>
+                @if (doPermitted('//stores'))
+                    <li class=" nav-item"><a href="/stores"><i
+                                class="la la-home"></i><span class="menu-title"
+                                data-i18n="Apps">Stores</span></a>
 
                     </li>
                 @endif
 
-                @if (doPermitted('//middleware/device'))
-                <li class=" nav-item"><a href="/middleware/device"><i
-                            class="la la-arrows-alt"></i><span class="menu-title"
-                            data-i18n="Apps">Middleware Device</span></a>
+                @if (doPermitted('//bikes'))
+                <li class=" nav-item"><a href="/bikes"><i
+                            class="la la-bicycle"></i><span class="menu-title"
+                            data-i18n="Apps">Bicycles</span></a>
 
                 </li>
             @endif

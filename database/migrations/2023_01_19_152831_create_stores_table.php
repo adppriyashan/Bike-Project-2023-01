@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('address');
             $table->float('lng');
             $table->float('ltd');
-            $table->float('informations');
+            $table->text('informations');
             $table->enum('status', [1, 2])->comment('1-Active / 2-Deleted');
             $table->timestamps();
         });
