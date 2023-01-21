@@ -77,7 +77,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-12 mt-1">
                                                         <label for="name"><small class="text-dark">
                                                                 Name{!! required_mark() !!}</small></label>
                                                         <input value="{{ old('name') }}" type="text" name="name"

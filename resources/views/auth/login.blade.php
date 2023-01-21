@@ -8,13 +8,13 @@
                     <div class="col-md-8">
                         <div class="card border-grey border-lighten-3 m-0">
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <img class="w-100" src="{{ asset('assets/app-assets/images/login/bg.jpg') }}"
+                                <div class="row align-self-center">
+                                    <div class="col-md-8 my-auto">
+                                        <img class="w-100 my-auto" src="{{ asset('assets/app-assets/images/login/bg.jpg') }}"
                                             alt="branding logo">
                                     </div>
-                                    <div class="col-md-4 border-left text-center">
-                                        <img class="w-75 mb-2 mt-2" src="{{ asset('assets/app-assets/images/logo/logo_text.png') }}"
+                                    <div class="col-md-4 border-left text-center my-auto">
+                                        <img class="w-75 mb-2" src="{{ asset('assets/app-assets/images/logo/logo_text.png') }}"
                                                 alt="branding logo">
                                         <form method="POST" action="{{ route('login') }}" class="text-left">
                                             @csrf
