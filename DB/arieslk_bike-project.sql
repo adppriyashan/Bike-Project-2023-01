@@ -1,21 +1,42 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : LOCALHOST
+ Source Server         : WOW Hosting
  Source Server Type    : MySQL
- Source Server Version : 80028
- Source Host           : localhost:3306
- Source Schema         : lora_project
+ Source Server Version : 100517
+ Source Host           : 109.70.148.33:3306
+ Source Schema         : arieslk_bike-project
 
  Target Server Type    : MySQL
- Target Server Version : 80028
+ Target Server Version : 100517
  File Encoding         : 65001
 
- Date: 20/08/2022 22:56:21
+ Date: 29/01/2023 12:36:33
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for bikes
+-- ----------------------------
+DROP TABLE IF EXISTS `bikes`;
+CREATE TABLE `bikes`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `owner` bigint UNSIGNED NOT NULL,
+  `mac_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `reference` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` enum('1','2') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '1-Active / 2-Inactive',
+  `available` enum('1','0') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '1-Not available / 0-Available',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of bikes
+-- ----------------------------
+INSERT INTO `bikes` VALUES (1, 2, '1232SDDK2K3M3M', '#ref0001', '1', '0', '2023-01-21 14:57:05', '2023-01-21 14:57:05');
 
 -- ----------------------------
 -- Table structure for failed_jobs
@@ -28,77 +49,34 @@ CREATE TABLE `failed_jobs`  (
   `queue` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `exception` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `failed_at` timestamp NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `failed_jobs_uuid_unique`(`uuid` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of failed_jobs
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for locations
+-- Table structure for histories
 -- ----------------------------
-DROP TABLE IF EXISTS `locations`;
-CREATE TABLE `locations`  (
+DROP TABLE IF EXISTS `histories`;
+CREATE TABLE `histories`  (
   `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-  `location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
-  `lng` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ltd` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` enum('1','2') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `bike` bigint UNSIGNED NOT NULL,
+  `reservation` bigint UNSIGNED NOT NULL,
+  `lng` double(8, 2) NOT NULL,
+  `ltd` double(8, 2) NOT NULL,
+  `status` enum('1','2') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '1-Active / 2-Deleted',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of locations
+-- Records of histories
 -- ----------------------------
-
--- ----------------------------
--- Table structure for middleware_device_data
--- ----------------------------
-DROP TABLE IF EXISTS `middleware_device_data`;
-CREATE TABLE `middleware_device_data`  (
-  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-  `value` int NOT NULL,
-  `middleware_device` bigint UNSIGNED NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of middleware_device_data
--- ----------------------------
-INSERT INTO `middleware_device_data` VALUES (1, 1, 1, '2022-08-18 22:23:08', '2022-08-18 22:23:04');
-INSERT INTO `middleware_device_data` VALUES (2, 1, 1, '2022-08-21 22:23:25', '2022-08-21 22:23:29');
-INSERT INTO `middleware_device_data` VALUES (3, 1, 2, '2022-08-18 22:23:43', '2022-08-18 22:23:46');
-
--- ----------------------------
--- Table structure for middleware_devices
--- ----------------------------
-DROP TABLE IF EXISTS `middleware_devices`;
-CREATE TABLE `middleware_devices`  (
-  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mac` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lng` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ltd` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` enum('1','2','3','4') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of middleware_devices
--- ----------------------------
-INSERT INTO `middleware_devices` VALUES (1, 'Location 1', '5565465', '6.878223', '79.832381', '1', '2022-08-20 16:48:53', '2022-08-20 16:48:53');
-INSERT INTO `middleware_devices` VALUES (2, 'Location 2', '774878', '6.861350', '79.837705', '1', '2022-08-20 16:49:13', '2022-08-20 16:49:13');
 
 -- ----------------------------
 -- Table structure for migrations
@@ -109,22 +87,23 @@ CREATE TABLE `migrations`  (
   `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of migrations
 -- ----------------------------
 INSERT INTO `migrations` VALUES (1, '2014_10_12_000000_create_users_table', 1);
-INSERT INTO `migrations` VALUES (2, '2014_10_12_100000_create_password_resets_table', 2);
-INSERT INTO `migrations` VALUES (3, '2019_08_19_000000_create_failed_jobs_table', 2);
-INSERT INTO `migrations` VALUES (4, '2019_12_14_000001_create_personal_access_tokens_table', 2);
-INSERT INTO `migrations` VALUES (5, '2021_12_21_044250_create_routes_table', 2);
-INSERT INTO `migrations` VALUES (6, '2021_12_21_045534_create_user_types_table', 2);
-INSERT INTO `migrations` VALUES (7, '2021_12_21_060615_create_permissions_table', 2);
-INSERT INTO `migrations` VALUES (8, '2022_06_21_154154_create_locations_table', 2);
-INSERT INTO `migrations` VALUES (10, '2022_08_10_152709_create_ships_table', 3);
-INSERT INTO `migrations` VALUES (11, '2022_08_20_092955_create_middleware_devices_table', 4);
-INSERT INTO `migrations` VALUES (12, '2022_08_20_165139_create_middleware_device_data_table', 5);
+INSERT INTO `migrations` VALUES (2, '2014_10_12_100000_create_password_resets_table', 1);
+INSERT INTO `migrations` VALUES (3, '2019_08_19_000000_create_failed_jobs_table', 1);
+INSERT INTO `migrations` VALUES (4, '2019_12_14_000001_create_personal_access_tokens_table', 1);
+INSERT INTO `migrations` VALUES (5, '2021_12_21_044250_create_routes_table', 1);
+INSERT INTO `migrations` VALUES (6, '2021_12_21_045534_create_user_types_table', 1);
+INSERT INTO `migrations` VALUES (7, '2021_12_21_060615_create_permissions_table', 1);
+INSERT INTO `migrations` VALUES (8, '2023_01_19_152831_create_stores_table', 1);
+INSERT INTO `migrations` VALUES (9, '2023_01_19_152901_create_bikes_table', 1);
+INSERT INTO `migrations` VALUES (10, '2023_01_19_152926_create_histories_table', 1);
+INSERT INTO `migrations` VALUES (11, '2023_01_29_044831_create_reservations_table', 2);
+INSERT INTO `migrations` VALUES (12, '2023_01_29_045132_change_histories_store_column_to_reservation', 2);
 
 -- ----------------------------
 -- Table structure for password_resets
@@ -152,7 +131,7 @@ CREATE TABLE `permissions`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of permissions
@@ -160,9 +139,11 @@ CREATE TABLE `permissions`  (
 INSERT INTO `permissions` VALUES (1, 1, 1, NULL, NULL);
 INSERT INTO `permissions` VALUES (2, 2, 1, NULL, NULL);
 INSERT INTO `permissions` VALUES (3, 3, 1, NULL, NULL);
-INSERT INTO `permissions` VALUES (4, 1, 2, '2022-08-10 15:34:56', '2022-08-10 15:34:56');
-INSERT INTO `permissions` VALUES (5, 4, 1, '2022-08-10 15:35:28', '2022-08-10 15:35:28');
-INSERT INTO `permissions` VALUES (6, 5, 1, '2022-08-20 16:35:14', '2022-08-20 16:35:14');
+INSERT INTO `permissions` VALUES (4, 4, 1, NULL, NULL);
+INSERT INTO `permissions` VALUES (5, 5, 1, NULL, NULL);
+INSERT INTO `permissions` VALUES (6, 1, 2, '2023-01-21 14:55:30', '2023-01-21 14:55:30');
+INSERT INTO `permissions` VALUES (7, 4, 2, '2023-01-21 14:55:33', '2023-01-21 14:55:33');
+INSERT INTO `permissions` VALUES (8, 5, 2, '2023-01-21 14:55:34', '2023-01-21 14:55:34');
 
 -- ----------------------------
 -- Table structure for personal_access_tokens
@@ -182,11 +163,30 @@ CREATE TABLE `personal_access_tokens`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `personal_access_tokens_token_unique`(`token` ASC) USING BTREE,
   INDEX `personal_access_tokens_tokenable_type_tokenable_id_index`(`tokenable_type` ASC, `tokenable_id` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of personal_access_tokens
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for reservations
+-- ----------------------------
+DROP TABLE IF EXISTS `reservations`;
+CREATE TABLE `reservations`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `bike` bigint UNSIGNED NOT NULL,
+  `user` bigint UNSIGNED NOT NULL,
+  `status` enum('1','2') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '1-Active / 2-Deleted',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of reservations
+-- ----------------------------
+INSERT INTO `reservations` VALUES (2, 1, 4, '1', '2023-01-29 06:09:28', '2023-01-29 06:09:28');
 
 -- ----------------------------
 -- Table structure for routes
@@ -200,37 +200,39 @@ CREATE TABLE `routes`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of routes
 -- ----------------------------
 INSERT INTO `routes` VALUES (1, 'Dashboard', '/home', 1, NULL, NULL);
-INSERT INTO `routes` VALUES (2, 'Users', '/users', 1, NULL, NULL);
-INSERT INTO `routes` VALUES (3, 'Usertypes', '/usertypes', 1, NULL, NULL);
-INSERT INTO `routes` VALUES (4, 'Ships', '/ships', 1, NULL, NULL);
-INSERT INTO `routes` VALUES (5, 'Middleware Device', '/middleware/device', 1, NULL, NULL);
+INSERT INTO `routes` VALUES (2, 'User Management', '/users', 1, NULL, NULL);
+INSERT INTO `routes` VALUES (3, 'Usertype Management', '/usertypes', 1, NULL, NULL);
+INSERT INTO `routes` VALUES (4, 'Stores Management', '/stores', 1, NULL, NULL);
+INSERT INTO `routes` VALUES (5, 'Bikes Management', '/bikes', 1, NULL, NULL);
 
 -- ----------------------------
--- Table structure for ships
+-- Table structure for stores
 -- ----------------------------
-DROP TABLE IF EXISTS `ships`;
-CREATE TABLE `ships`  (
+DROP TABLE IF EXISTS `stores`;
+CREATE TABLE `stores`  (
   `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `owner` bigint UNSIGNED NOT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mac` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user` int NOT NULL,
-  `status` enum('1','2') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
+  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `lng` double(8, 2) NOT NULL,
+  `ltd` double(8, 2) NOT NULL,
+  `informations` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` enum('1','2') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '1-Active / 2-Deleted',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of ships
+-- Records of stores
 -- ----------------------------
-INSERT INTO `ships` VALUES (1, 'Ship 1', '435454545', '4545454', 1, '1', '2022-08-20 09:16:13', '2022-08-20 09:16:13');
+INSERT INTO `stores` VALUES (1, 2, 'Store Owner 1', '115/3 Dutugamunu Street, Colombo 06', 6.87, 79.87, 'Mobile : 0779778269', '1', '2023-01-21 14:50:30', '2023-01-21 14:50:30');
 
 -- ----------------------------
 -- Table structure for user_types
@@ -243,13 +245,14 @@ CREATE TABLE `user_types`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_types
 -- ----------------------------
 INSERT INTO `user_types` VALUES (1, 'Administrator', '1', NULL, NULL);
-INSERT INTO `user_types` VALUES (2, 'Users', '1', NULL, NULL);
+INSERT INTO `user_types` VALUES (2, 'Store Owner', '1', NULL, NULL);
+INSERT INTO `user_types` VALUES (3, 'Users', '1', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for users
@@ -261,21 +264,21 @@ CREATE TABLE `users`  (
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `usertype` enum('1','2','3') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '3',
+  `status` enum('1','2','3','4') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
   `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `usertype` int NULL DEFAULT NULL,
-  `status` int NULL DEFAULT NULL,
-  `selected_carpark` int NULL DEFAULT NULL,
-  `selected_user` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `users_email_unique`(`email` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (1, 'User', 'user@gmail.com', NULL, '$2y$10$KaG6gwykL/whOh9yuzURROfAuDnGfM0S2WU6AMj0y/Le9OI9EQPky', '', '2022-07-11 10:41:26', '2022-08-08 16:46:07', 2, 1, NULL, NULL);
-INSERT INTO `users` VALUES (2, 'Administrator', 'admin@gmail.com', NULL, '$2y$10$u2ktH1eK/1ao8BB.uuqctuEIk7k5nMvVqq6ph.PDkDMmhMFFd5z1q', 'mSuhXbgJ8Pw1lSsRzX0CL3iJfIedBjlC0pGYFb7pC6V5ZXaS2w2bNPuJClTy', '2022-07-11 12:10:46', '2022-07-20 21:07:34', 1, 1, 3, 4);
+INSERT INTO `users` VALUES (1, 'Administrator', 'admin@gmail.com', NULL, '$2y$10$u2ktH1eK/1ao8BB.uuqctuEIk7k5nMvVqq6ph.PDkDMmhMFFd5z1q', '1', '1', NULL, NULL, NULL);
+INSERT INTO `users` VALUES (2, 'Store1', 'store1@gmail.com', NULL, '$2y$10$aG2f40f7CujOiqrFkUIjrOPHHyAaltlC6sFUJQDrl2xwYP7q889F.', '2', '1', NULL, '2023-01-21 14:47:17', '2023-01-21 14:47:17');
+INSERT INTO `users` VALUES (3, 'Pasindu', 'pasindu@gmail.com', NULL, '$2y$10$kM4YnI1asDaw1BVcwXWoCuicJBPHvl/pMHFg/9xlfPKSfQqJB4ih.', '3', '1', NULL, '2023-01-27 18:03:40', '2023-01-27 18:03:40');
+INSERT INTO `users` VALUES (4, 'User', 'user@gmail.com', NULL, '$2y$10$1NCJXC/RE.M0yHNOWtaobOOhy9BBV/RbryiFYRZ8Jz573w3eUDTH6', '3', '1', NULL, '2023-01-27 18:07:54', '2023-01-27 18:07:54');
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -1,9 +1,17 @@
 <?php
 
-use App\Http\Controllers\ShipController;
+use App\Http\Controllers\APIUserController;
+use App\Http\Controllers\MappingController;
+use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('/boat')->group(function () {
-    Route::get('history/enroll', [ShipController::class, 'enrollRecords']);
-    Route::get('emergency/enroll', [ShipController::class, 'enrollEmergency']);
+Route::prefix('/auth')->group(function () {
+    Route::post('/login',[APIUserController::class,'login']);
+    Route::post('/register',[APIUserController::class,'register']);
+});
+Route::prefix('/reservation')->group(function () {
+    Route::get('/qrscan',[ReservationController::class,'reserveByQRCode']);
+});
+Route::prefix('/mapping')->group(function () {
+    Route::get('/record/{mac}/{lng}/{ltd}/{reservation}',[MappingController::class,'mapData']);
 });
