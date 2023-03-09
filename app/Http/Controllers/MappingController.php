@@ -12,7 +12,7 @@ class MappingController extends Controller
     public function mapData(Request $request, $mac, $lng, $ltd)
     {
         $bike = Bike::where('status', 1)->where('mac_address', $mac)->first();
-        if ($bike && $bike->available == 0) {
+        if ($bike && $bike->available == 1) {
             $reservation = Reservations::where('status', 1)->where('bike',  $bike->id)->latest()->first();
             if ($reservation) {
                 History::create([
@@ -21,6 +21,11 @@ class MappingController extends Controller
                     'lng' => $lng,
                     'ltd' => $ltd,
                     'status' => 1
+                ]);
+
+                $bike->update([
+                    'lng' => $lng,
+                    'ltd' => $ltd
                 ]);
             } else {
                 return 2;

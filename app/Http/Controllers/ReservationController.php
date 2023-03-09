@@ -16,7 +16,7 @@ class ReservationController extends Controller
         $code = base64_decode($request->code);
         $user = base64_decode($request->user);
         $bike = Bike::where('status', 1)->where('mac_address',  $code)->first();
-        if ($bike && $bike->available == 0) {
+        if ($bike && $bike->available == 1) {
             $reservation = Reservations::where('status', 1)->where('bike',  $bike->id)->first();
             if ($reservation) {
                 return $this->errorResponse(code: 400, data: 'Reservation already exists.');

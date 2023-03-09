@@ -18,9 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger('owner');
             $table->string('name');
             $table->string('address');
-            $table->float('lng');
-            $table->float('ltd');
-            $table->text('informations');
+            $table->string('lng');
+            $table->string('ltd');
+            $table->text('informations')->nullable();
             $table->enum('status', [1, 2])->comment('1-Active / 2-Deleted');
             $table->timestamps();
         });

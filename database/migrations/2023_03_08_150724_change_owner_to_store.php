@@ -13,14 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('histories', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('bike');
+        Schema::table('bikes', function (Blueprint $table) {
+            $table->dropColumn('owner');
             $table->unsignedBigInteger('store');
-            $table->string('lng');
-            $table->string('ltd');
-            $table->enum('status', [1, 2])->comment('1-Active / 2-Deleted');
-            $table->timestamps();
         });
     }
 
@@ -31,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('histories');
+        Schema::table('bikes', function (Blueprint $table) {
+            //
+        });
     }
 };

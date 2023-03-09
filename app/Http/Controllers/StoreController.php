@@ -23,18 +23,17 @@ class StoreController extends Controller
             'lng' => 'required|numeric',
             'ltd' => 'required|numeric',
             'informations' => 'nullable|string',
-            'owner' => 'required|string|exists:users,email',
+            'owner' => 'required_unless:isnew,2|string|exists:users,email',
             'isnew' => 'required|numeric',
             'record' => 'nullable|numeric',
         ]);
 
         $user = User::where('usertype', 2)->where('email', $request->owner)->first();
-        if (!$user) {
+        if ($request->isnew == 1 && !$user) {
             throw ValidationException::withMessages(['owner' => 'Invalid Account']);
         }
 
         $data = [
-            'owner' => $user->id,
             'name' => $request->name,
             'address' => $request->address,
             'lng' => $request->lng,
@@ -45,6 +44,7 @@ class StoreController extends Controller
 
 
         if ($request->isnew == 1) {
+            $data['owner']=$user->id;
             Store::create($data);
         } else {
             Store::where('id', $request->record)->update($data);

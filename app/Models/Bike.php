@@ -10,7 +10,7 @@ class Bike extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['owner', 'mac_address', 'reference', 'status', 'available'];
+    protected $fillable = ['store', 'mac_address', 'reference', 'status', 'available','lng','ltd'];
 
     public static $status = [1 => 'Active', 2 => 'Inactive', 3 => 'Deleted'];
 
@@ -29,12 +29,22 @@ class Bike extends Model
         return ['mac_address', 'reference'];
     }
 
+    public static function laratablesStore($record)
+    {
+        return (isset($record->storeData)) ? $record->storeData->name  : '<strong class="text-danger">No User Assigned</strong>';
+    }
+
+    public function storeData()
+    {
+        return $this->hasOne(Store::class, 'id', 'store');
+    }
+
     public static function laratablesQueryConditions($query)
     {
         if (Auth::user()->usertype == 1) {
-            return $query->where('status', 1);
+            return $query->whereIn('status', [1,2])->with('storeData');
         } else {
-            return $query->whereIn('status', [1, 2])->where('owner', Auth::user()->id);
+            return $query->whereIn('status', [1, 2])->where('owner', Auth::user()->id)->with('storeData');;
         }
     }
 }

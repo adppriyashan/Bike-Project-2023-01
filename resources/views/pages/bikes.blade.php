@@ -29,6 +29,7 @@
                                         <table class="table w-100" id="datatable">
                                             <thead>
                                                 <tr>
+                                                    <th>Store</th>
                                                     <th>Reference</th>
                                                     <th>Mac Address</th>
                                                     <th>Status</th>
@@ -67,9 +68,26 @@
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <label for="reference"><small class="text-dark">
+                                                                Store{!! required_mark() !!}</small></label>
+                                                                <select class="form-control" name="store" id="store">
+                                                        @foreach ($stores as $store)
+
+                                                                <option {{ old('store') == $store->id ? 'selected' : '' }}
+                                                                    value="{{ $store->id }}">{{ $store->name }}</option>
+
+                                                        @endforeach
+                                                    </select>
+                                                        @error('reference')
+                                                            <span store="text-danger"><small>{{ $message }}</small></span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-1">
+                                                    <div class="col-md-12">
+                                                        <label for="reference"><small class="text-dark">
                                                                 Reference{!! required_mark() !!}</small></label>
-                                                        <input value="{{ old('reference') }}" type="text" name="reference"
-                                                            id="reference" class="form-control">
+                                                        <input value="{{ old('reference') }}" type="text"
+                                                            name="reference" id="reference" class="form-control">
                                                         @error('reference')
                                                             <span class="text-danger"><small>{{ $message }}</small></span>
                                                         @enderror
@@ -79,8 +97,8 @@
                                                     <div class="col-md-12">
                                                         <label for="mac_address"><small class="text-dark">
                                                                 Mac Address{!! required_mark() !!}</small></label>
-                                                        <input value="{{ old('mac_address') }}" type="text" name="mac_address"
-                                                            id="mac_address" class="form-control">
+                                                        <input value="{{ old('mac_address') }}" type="text"
+                                                            name="mac_address" id="mac_address" class="form-control">
                                                         @error('mac_address')
                                                             <span class="text-danger"><small>{{ $message }}</small></span>
                                                         @enderror
@@ -149,7 +167,11 @@
             serverSide: true,
             responsive: true,
             ajax: "{{ route('admin.bikes.list') }}",
-            columns: [{
+            columns: [
+                {
+                    name: 'store'
+                },
+                {
                     name: 'reference'
                 },
                 {
@@ -180,6 +202,8 @@
                         'id': id
                     },
                     success: function(response) {
+                        $('#status').val(response.status);
+                        $('#store').val(response.store);
                         $('#reference').val(response.reference);
                         $('#mac_address').val(response.mac_address);
                         $('#isnew').val('2').trigger('change');
