@@ -12,6 +12,7 @@ Route::prefix('/auth')->group(function () {
 });
 Route::prefix('/bikes')->group(function () {
     Route::get('/get-available',[BikeController::class,'getAvailable']);
+    Route::get('/get-available-by-order',[BikeController::class,'getAvailableNearByOrder']);
 });
 Route::prefix('/reservation')->group(function () {
     Route::get('/qrscan',[ReservationController::class,'reserveByQRCode']);

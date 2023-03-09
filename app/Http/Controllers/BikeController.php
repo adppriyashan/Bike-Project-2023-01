@@ -37,6 +37,48 @@ class BikeController extends Controller
         }
     }
 
+    public function getAvailableNearByOrder(Request $request)
+    {
+        try {
+            $data = [];
+            if ($request->has('lng') && $request->filled('lng') && $request->has('ltd') && $request->filled('ltd')) {
+                foreach (Bike::where('status', 1)->where('available', 1)->get() as $key => $value) {
+                    $distance=$this->distance($request->ltd, $request->lng, $value->ltd, $value->lng, 'K');
+                    if( $distance<10){
+                        $value['distance'] =  $distance;
+                        $data[] = $value;
+                    }
+
+                }
+            }
+            return $this->successResponse(data: $data);
+        } catch (Exception $th) {
+            error_log($th->getMessage());
+        }
+    }
+
+    function distance($lat1, $lon1, $lat2, $lon2, $unit)
+    {
+        if (($lat1 == $lat2) && ($lon1 == $lon2)) {
+            return 0;
+        } else {
+            $theta = $lon1 - $lon2;
+            $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+            $dist = acos($dist);
+            $dist = rad2deg($dist);
+            $miles = $dist * 60 * 1.1515;
+            $unit = strtoupper($unit);
+
+            if ($unit == "K") {
+                return ($miles * 1.609344);
+            } else if ($unit == "N") {
+                return ($miles * 0.8684);
+            } else {
+                return $miles;
+            }
+        }
+    }
+
     public function enroll(Request $request)
     {
         $request->validate([
@@ -48,7 +90,7 @@ class BikeController extends Controller
             'status' => 'required|numeric',
         ]);
 
-        $store=Store::where('id',$request->store)->first();
+        $store = Store::where('id', $request->store)->first();
 
         $data = [
             'store' => $request->store,
@@ -59,8 +101,8 @@ class BikeController extends Controller
 
 
         if ($request->isnew == 1) {
-            $data['lng']=$store->lng;
-            $data['ltd']=$store->ltd;
+            $data['lng'] = $store->lng;
+            $data['ltd'] = $store->ltd;
             Bike::create($data);
         } else {
             Bike::where('id', $request->record)->update($data);
