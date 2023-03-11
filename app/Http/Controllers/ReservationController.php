@@ -11,6 +11,18 @@ class ReservationController extends Controller
 {
     use ResponseTrait;
 
+    public function checkAvailabilityByQRCode(Request $request)
+    {
+        error_log($request->code);
+        $code = base64_decode($request->code);
+        error_log($code);
+        $bike = Bike::where('status', 1)->where('mac_address',  $code)->first();
+        if ($bike && $bike->available == 1) {
+            return $this->successResponse();
+        } else {
+            return $this->errorResponse(code: 400, data: 'This ride is not available');
+        }
+    }
     public function reserveByQRCode(Request $request)
     {
         $code = base64_decode($request->code);
