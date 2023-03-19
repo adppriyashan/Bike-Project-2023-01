@@ -17,6 +17,7 @@ Route::prefix('/bikes')->group(function () {
 Route::prefix('/reservation')->group(function () {
     Route::get('/availability',[ReservationController::class,'checkAvailabilityByQRCode']);
     Route::get('/qrscan',[ReservationController::class,'reserveByQRCode']);
+    Route::get('/hour',[ReservationController::class,'reserveByHour']);
 });
 Route::prefix('/mapping')->group(function () {
     Route::get('/record/{mac}/{lng}/{ltd}/{reservation}',[MappingController::class,'mapData']);

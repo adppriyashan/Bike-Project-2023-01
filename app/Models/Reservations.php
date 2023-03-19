@@ -14,6 +14,11 @@ class Reservations extends Model
     protected $fillable = [
         'bike',
         'user',
-        'status'
+        'status',
+        'total',
+        'ride_at',
+        'drop_at',
+        'card_last_numbers',
+        'is_paid',
     ];
 }
