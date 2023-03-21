@@ -20,5 +20,13 @@ class Reservations extends Model
         'drop_at',
         'card_last_numbers',
         'is_paid',
+        'from_lng',
+        'from_ltd',
+        'to_lng',
+        'to_ltd',
     ];
+
+    public function bikeData(){
+        return $this->hasOne(Bike::class,'id','bike');
+    }
 }

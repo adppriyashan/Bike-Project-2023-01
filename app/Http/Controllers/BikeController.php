@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bike;
+use App\Models\Reservations;
 use App\Models\Store;
 use App\Models\User;
 use App\Traits\ResponseTrait;
@@ -28,10 +29,19 @@ class BikeController extends Controller
     }
 
 
-    public function getAvailable()
+    public function getAvailable(Request $request)
     {
         try {
-            return $this->successResponse(data: Bike::where('status', 1)->where('available', 1)->get());
+            $ongoing = Reservations::where('user', $request->user)->where('status', 1)->with('bikeData')->first();
+            $dataQuery = Bike::where('status', 1);
+
+            if ($ongoing) {
+                $dataQuery = $dataQuery->where('id', $ongoing->bike);
+            } else {
+                $dataQuery = $dataQuery->where('available', 1);
+            }
+
+            return $this->successResponse(data: ['ongoing_order' =>  $ongoing ?? 0, 'bikes' => $dataQuery->get()]);
         } catch (Exception $th) {
             error_log($th->getMessage());
         }
@@ -43,12 +53,11 @@ class BikeController extends Controller
             $data = [];
             if ($request->has('lng') && $request->filled('lng') && $request->has('ltd') && $request->filled('ltd')) {
                 foreach (Bike::where('status', 1)->where('available', 1)->get() as $key => $value) {
-                    $distance=$this->distance($request->ltd, $request->lng, $value->ltd, $value->lng, 'K');
-                    if( $distance<10){
+                    $distance = $this->distance($request->ltd, $request->lng, $value->ltd, $value->lng, 'K');
+                    if ($distance < 10) {
                         $value['distance'] =  $distance;
                         $data[] = $value;
                     }
-
                 }
             }
             return $this->successResponse(data: $data);
@@ -57,7 +66,7 @@ class BikeController extends Controller
         }
     }
 
-    function distance($lat1, $lon1, $lat2, $lon2, $unit)
+    public function distance($lat1, $lon1, $lat2, $lon2, $unit)
     {
         if (($lat1 == $lat2) && ($lon1 == $lon2)) {
             return 0;
