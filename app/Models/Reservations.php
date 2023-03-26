@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,9 +25,17 @@ class Reservations extends Model
         'from_ltd',
         'to_lng',
         'to_ltd',
+        'distance'
     ];
 
     public function bikeData(){
         return $this->hasOne(Bike::class,'id','bike');
+    }
+
+    protected function total(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => format_currency($value),
+        );
     }
 }

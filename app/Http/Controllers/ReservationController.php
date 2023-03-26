@@ -16,18 +16,23 @@ class ReservationController extends Controller
 
     public function checkAvailabilityByQRCode(Request $request)
     {
-        $code = base64_decode($request->code);
-        error_log($code);
-        $bike = Bike::where('status', 1)->where('mac_address',  $code)->first();
-        error_log(json_encode($bike));
+        $bike = null;
+        $code = null;
+        if ($request->has('code')) {
+            $code = base64_decode($request->code);
+            $bike = Bike::where('status', 1)->where('mac_address',  $code)->first();
+        } else {
+            $bike = Bike::where('id',  $request->bikeId)->where('status', 1)->first();
+            $code = $bike->mac_address;
+        }
         if ($bike && $bike->available == 0 && Reservations::where('user', $request->user)->where('status', 1)->where('bike', $bike->id)->first()) {
             $distance = (new BikeController)->distance($request->ltd, $request->lng, $bike->ltd, $bike->lng, 'K');
-            return $this->successResponse(data: ['distance' => $distance, 'price' => format_currency($distance * env('1KMTOTAL'))]);
+            return $this->successResponse(data: ['distance' => $distance, 'price' => format_currency($distance * env('1KMTOTAL')), 'bike' => $code, 'lng' => $bike->lng, 'ltd' => $bike->ltd]);
         }
 
         if ($bike && $bike->available == 1) {
             $distance = (new BikeController)->distance($request->ltd, $request->lng, $bike->ltd, $bike->lng, 'K');
-            return $this->successResponse(data: ['distance' => $distance, 'price' => format_currency($distance * env('1KMTOTAL'))]);
+            return $this->successResponse(data: ['distance' => $distance, 'price' => format_currency($distance * env('1KMTOTAL')), 'bike' => $code, 'lng' => $bike->lng, 'ltd' => $bike->ltd]);
         } else {
             return $this->errorResponse(code: 400, data: 'This ride is not available');
         }
@@ -51,10 +56,15 @@ class ReservationController extends Controller
             }
 
             if ($request->has('temp') && $request->temp != '' && $reservation) {
+
+                $distance = (new BikeController)->distance($reservation->from_ltd, $reservation->from_lng, $reservation->to_ltd, $reservation->to_lng, 'K');
+
                 $reservation->update([
                     'card_last_numbers' => $cardLastNumbers,
                     'status' => 1,
                     'is_paid' => 1,
+                    'distance' => $distance,
+                    'total' => $distance * env('1KMTOTAL'),
                 ]);
             } else {
 
@@ -62,9 +72,13 @@ class ReservationController extends Controller
                 if ($reservation)
                     return $this->errorResponse(code: 400, data: 'Reservation already exists.');
 
+                $distance = (new BikeController)->distance($request->from_ltd, $request->from_lng, $request->to_ltd, $request->to_lng, 'K');
+
                 Reservations::create([
                     'bike' => $bike->id,
                     'user' => $user,
+                    'distance' => $distance,
+                    'total' => $distance * env('1KMTOTAL'),
                     'status' => 1,
                     'ride_at' =>    Carbon::now(),
                     'is_paid' => 1,
@@ -81,6 +95,12 @@ class ReservationController extends Controller
         } catch (Exception $th) {
             error_log($th->getMessage());
         }
+    }
+
+    public function newride(Request $request)
+    {
+        $this->finishReservation($request);
+        return $this->reserveByQRCode($request);
     }
 
     public function reserveByHour(Request $request)
@@ -122,5 +142,18 @@ class ReservationController extends Controller
             DB::rollBack();
             error_log($th->getMessage());
         }
+    }
+
+    public function finishReservation(Request $request)
+    {
+        $reservation = Reservations::where('status', 1)->where('id',  $request->id)->first();
+        Bike::where('id', $reservation->bike)->update(['available' => '1']);
+        $reservation->update(['status' => 2]);
+        return $this->successResponse(data: base64_encode(Bike::where('id', $reservation->bike)->first()->mac_address));
+    }
+
+    public function historyList(Request $request)
+    {
+        return $this->successResponse(data: Reservations::where('status', 2)->where('user',  $request->user)->orderBy('created_at', 'DESC')->get());
     }
 }
