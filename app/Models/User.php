@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -20,6 +21,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'distance',
         'name',
         'email',
         'status',
@@ -81,5 +83,18 @@ class User extends Authenticatable
     public function usertypedata()
     {
         return $this->hasOne(UserType::class, 'id', 'usertype');
+    }
+
+    protected function distance(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => number_format((float)$value, 2, '.', ''),
+        );
+    }
+
+    public static function getLeaderBoard(){
+        return self::where('usertype', 3)->where('status', 1)->where(function ($query) {
+            $query->where('distance', '>', 0)->orWhere('distance', '!=', null);
+        })->orderBy('distance', 'DESC')->limit(10)->get();
     }
 }

@@ -10,7 +10,7 @@ class Bike extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['store', 'mac_address', 'reference', 'status', 'available','lng','ltd'];
+    protected $fillable = ['store', 'mac_address', 'reference', 'status', 'available','lng','ltd','locked'];
 
     public static $status = [1 => 'Active', 2 => 'Inactive', 3 => 'Deleted'];
 

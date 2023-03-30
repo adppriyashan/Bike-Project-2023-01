@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Reservations;
+use App\Models\SMSModel;
 use App\Models\User;
 use App\Models\UserType;
+use App\Traits\ResponseTrait;
+use Exception;
 use Freshbitsweb\Laratables\Laratables;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -14,6 +18,8 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+    use ResponseTrait;
+
     protected $officerUserType = 4;
 
     public function index()
@@ -116,5 +122,36 @@ class UserController extends Controller
             'id' => 'required|exists:users,id'
         ]);
         return User::where('id', $request->id)->first();
+    }
+
+    public function getLeaderBoard()
+    {
+        $data = User::getLeaderBoard();
+        // return $this->successResponse(data: (count($data) == 10) ? $data : []);
+        return $this->successResponse(data: $data);
+    }
+
+    public function informEmergency(Request $request)
+    {
+
+        try {
+            $content = '';
+
+            $user = User::where('id', $request->user)->first();
+
+            $content .= '*** EMERGENCY - ' . (($request->type == 'police') ? 'POLICE' : 'HOSPITAL').' *** ';
+            $content .= 'NAME : ' . $user->name . ' ';
+            $content .= '| EMAIL : ' . $user->email . ' ';
+
+            $reservation = Reservations::where('status', 1)->where('is_paid', 1)->where('user', $request->user)->with('bikeData')->first();
+
+            $content .= '| CURRENT LOCATION : ' . $reservation->bikeData->lng . ', ' . $reservation->bikeData->ltd;
+
+            if ($user && $reservation) {
+                (new SMSModel)->send($content, ($request->type == 'police') ? env('POLICE_CONTACT') : env('HOSPITAL_CONTACT'));
+            }
+        } catch (Exception $th) {
+            error_log($th->getMessage());
+        }
     }
 }

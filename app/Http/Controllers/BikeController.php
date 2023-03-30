@@ -41,8 +41,6 @@ class BikeController extends Controller
                 $dataQuery = $dataQuery->where('available', 1);
             }
 
-            error_log(json_encode( $ongoing ));
-
             return $this->successResponse(data: ['ongoing_order' =>  ($ongoing ?? 0), 'bikes' => $dataQuery->get()]);
         } catch (Exception $th) {
             error_log($th->getMessage());

@@ -38,4 +38,8 @@ class Reservations extends Model
             get: fn (string $value) => format_currency($value),
         );
     }
+
+    public function history(){
+        return $this->hasMany(History::class,'reservation','id');
+    }
 }

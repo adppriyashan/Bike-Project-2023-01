@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bike;
 use App\Models\Reservations;
+use App\Models\User;
 use App\Traits\ResponseTrait;
 use Carbon\Carbon;
 use Exception;
@@ -25,14 +26,27 @@ class ReservationController extends Controller
             $bike = Bike::where('id',  $request->bikeId)->where('status', 1)->first();
             $code = $bike->mac_address;
         }
+
+        $userLeaderboard = User::getLeaderBoard();
+        $discount = 0;
+
+        if (count($userLeaderboard) == 10) {
+            foreach ($userLeaderboard as $key => $value) {
+                if ($value->id == $request->user) {
+                    $discount = 10 / $key + 1;
+                    break;
+                }
+            }
+        }
+
         if ($bike && $bike->available == 0 && Reservations::where('user', $request->user)->where('status', 1)->where('bike', $bike->id)->first()) {
             $distance = (new BikeController)->distance($request->ltd, $request->lng, $bike->ltd, $bike->lng, 'K');
-            return $this->successResponse(data: ['distance' => $distance, 'price' => format_currency($distance * env('1KMTOTAL')), 'bike' => $code, 'lng' => $bike->lng, 'ltd' => $bike->ltd]);
+            return $this->successResponse(data: ['discount' => $discount, 'distance' => $distance, 'price' => format_currency(($distance * env('1KMTOTAL')) - $discount), 'bike' => $code, 'lng' => $bike->lng, 'ltd' => $bike->ltd]);
         }
 
         if ($bike && $bike->available == 1) {
             $distance = (new BikeController)->distance($request->ltd, $request->lng, $bike->ltd, $bike->lng, 'K');
-            return $this->successResponse(data: ['distance' => $distance, 'price' => format_currency($distance * env('1KMTOTAL')), 'bike' => $code, 'lng' => $bike->lng, 'ltd' => $bike->ltd]);
+            return $this->successResponse(data: ['discount' => $discount, 'distance' => $distance, 'price' => format_currency(($distance * env('1KMTOTAL')) - $discount), 'bike' => $code, 'lng' => $bike->lng, 'ltd' => $bike->ltd]);
         } else {
             return $this->errorResponse(code: 400, data: 'This ride is not available');
         }
@@ -55,6 +69,18 @@ class ReservationController extends Controller
                 return $this->errorResponse(code: 400, data: 'Reservation cannot complete');
             }
 
+            $userLeaderboard = User::getLeaderBoard();
+            $discount = 0;
+
+            if (count($userLeaderboard) == 10) {
+                foreach ($userLeaderboard as $key => $value) {
+                    if ($value->id == $request->user) {
+                        $discount = 10 / $key + 1;
+                        break;
+                    }
+                }
+            }
+
             if ($request->has('temp') && $request->temp != '' && $reservation) {
 
                 $distance = (new BikeController)->distance($reservation->from_ltd, $reservation->from_lng, $reservation->to_ltd, $reservation->to_lng, 'K');
@@ -64,7 +90,7 @@ class ReservationController extends Controller
                     'status' => 1,
                     'is_paid' => 1,
                     'distance' => $distance,
-                    'total' => $distance * env('1KMTOTAL'),
+                    'total' => ($distance * env('1KMTOTAL')) - $discount,
                 ]);
             } else {
 
@@ -78,7 +104,7 @@ class ReservationController extends Controller
                     'bike' => $bike->id,
                     'user' => $user,
                     'distance' => $distance,
-                    'total' => $distance * env('1KMTOTAL'),
+                    'total' => ($distance * env('1KMTOTAL')) - $discount,
                     'status' => 1,
                     'ride_at' =>    Carbon::now(),
                     'is_paid' => 1,
@@ -90,7 +116,7 @@ class ReservationController extends Controller
                 ]);
             }
 
-            $bike->update(['available' => 2]);
+            $bike->update(['available' => 2, 'locked' => 0]);
             return $this->successResponse(data: 'Payment complete, You can ride now');
         } catch (Exception $th) {
             error_log($th->getMessage());
@@ -147,13 +173,20 @@ class ReservationController extends Controller
     public function finishReservation(Request $request)
     {
         $reservation = Reservations::where('status', 1)->where('id',  $request->id)->first();
-        Bike::where('id', $reservation->bike)->update(['available' => '1']);
-        $reservation->update(['status' => 2]);
+        Bike::where('id', $reservation->bike)->update(['available' => '1', 'locked' => 1]);
+        $reservation->update(['status' => 2, 'drop_at' => Carbon::now()]);
+        User::where('id', $reservation->user)->increment('distance', $reservation->distance);
         return $this->successResponse(data: base64_encode(Bike::where('id', $reservation->bike)->first()->mac_address));
+    }
+
+    public function lockStatus(Request $request)
+    {
+        $reservation = Reservations::where('status', 1)->where('id',  $request->id)->first();
+        Bike::where('id', $reservation->bike)->update(['locked' => $request->lock_status]);
     }
 
     public function historyList(Request $request)
     {
-        return $this->successResponse(data: Reservations::where('status', 2)->where('user',  $request->user)->orderBy('created_at', 'DESC')->get());
+        return $this->successResponse(data: Reservations::where('status', 2)->where('user',  $request->user)->with('history')->orderBy('created_at', 'DESC')->get());
     }
 }
