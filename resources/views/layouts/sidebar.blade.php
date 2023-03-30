@@ -7,34 +7,32 @@
                 </li>
 
                 @if (doPermitted('//stores'))
-                    <li class=" nav-item"><a href="/stores"><i
-                                class="la la-home"></i><span class="menu-title"
+                    <li class=" nav-item"><a href="/stores"><i class="la la-home"></i><span class="menu-title"
                                 data-i18n="Apps">Stores</span></a>
 
                     </li>
                 @endif
 
                 @if (doPermitted('//bikes'))
-                <li class=" nav-item"><a href="/bikes"><i
-                            class="la la-bicycle"></i><span class="menu-title"
-                            data-i18n="Apps">Bicycles</span></a>
+                    <li class=" nav-item"><a href="/bikes"><i class="la la-bicycle"></i><span class="menu-title"
+                                data-i18n="Apps">Bicycles</span></a>
 
-                </li>
-            @endif
+                    </li>
+                @endif
 
-                @if (doPermitted('//sale-report') || doPermitted('//feedback-report'))
+                @if (doPermitted('//sales-report') || doPermitted('//rides-report'))
                     <li class=" nav-item"><a href="#"><i class="
-                        la la-book"></i><span class="menu-title"
-                                data-i18n="Pages">Reports</span></a>
+                        la la-book"></i><span
+                                class="menu-title" data-i18n="Pages">Reports</span></a>
                         <ul class="menu-content">
-                            @if (doPermitted('//sale-report'))
-                                <li><a class="menu-item" href="/sale-report"><i
-                                            class="la la-bar-chart"></i><span>Sale Report</span></a>
+                            @if (doPermitted('//sales-report'))
+                                <li><a class="menu-item" href="/sales-report"><i class="la la-bar-chart"></i><span>Sales
+                                            Report</span></a>
                                 </li>
                             @endif
-                            @if (doPermitted('//feedback-report'))
-                                <li><a class="menu-item" href="/feedback-report"><i
-                                            class="la la-bookmark-o"></i><span>Feedback Report</span></a>
+                            @if (doPermitted('//rides-report'))
+                                <li><a class="menu-item" href="/rides-report"><i
+                                            class="la la-bookmark-o"></i><span>Rides Report</span></a>
                                 </li>
                             @endif
                         </ul>
@@ -51,8 +49,8 @@
                                 </li>
                             @endif
                             @if (doPermitted('//users'))
-                                <li><a class="menu-item" href="/usertypes"><i
-                                            class="la la-key"></i><span>Permission Levels</span></a>
+                                <li><a class="menu-item" href="/usertypes"><i class="la la-key"></i><span>Permission
+                                            Levels</span></a>
                                 </li>
                             @endif
                         </ul>

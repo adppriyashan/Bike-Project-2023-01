@@ -1,9 +1,4 @@
 <script src="{{ asset('assets/app-assets/vendors/js/vendors.min.js') }}"></script>
-<script src="{{ asset('assets/app-assets/vendors/js/charts/chart.min.js') }}"></script>
-<script src="{{ asset('assets/app-assets/vendors/js/charts/raphael-min.js') }}"></script>
-<script src="{{ asset('assets/app-assets/vendors/js/charts/morris.min.js') }}"></script>
-<script src="{{ asset('assets/app-assets/vendors/js/charts/jvector/jquery-jvectormap-2.0.3.min.js') }}"></script>
-<script src="{{ asset('assets/app-assets/vendors/js/charts/jvector/jquery-jvectormap-world-mill.js') }}"></script>
 <script src="{{ asset('assets/app-assets/data/jvector/visitor-data.js') }}"></script>
 <script src="{{ asset('assets/app-assets/js/core/app-menu.js') }}"></script>
 <script src="{{ asset('assets/app-assets/js/trix.js') }}"></script>
@@ -12,8 +7,12 @@
 <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src='https://cdn.plot.ly/plotly-2.14.0.min.js'></script><script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+    integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src='https://cdn.plot.ly/plotly-2.14.0.min.js'></script>
+
+<script>
     $('#isnew').change(function(e) {
         let submitbtn = $('#submitbtn');
         if ($(this).val() == '1') {
@@ -113,3 +112,5 @@
         }
     });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ asset('assets/js/custom.js') }}"></script>

@@ -28,18 +28,20 @@ class Reservations extends Model
         'distance'
     ];
 
-    public function bikeData(){
-        return $this->hasOne(Bike::class,'id','bike');
-    }
-
-    protected function total(): Attribute
+    public function bikeData()
     {
-        return Attribute::make(
-            get: fn (string $value) => format_currency($value),
-        );
+        return $this->hasOne(Bike::class, 'id', 'bike');
     }
 
-    public function history(){
-        return $this->hasMany(History::class,'reservation','id');
+    // protected function total(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn (string $value) => format_currency($value),
+    //     );
+    // }
+
+    public function history()
+    {
+        return $this->hasMany(History::class, 'reservation', 'id');
     }
 }
