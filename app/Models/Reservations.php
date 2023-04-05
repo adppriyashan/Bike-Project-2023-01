@@ -32,6 +32,11 @@ class Reservations extends Model
     {
         return $this->hasOne(Bike::class, 'id', 'bike');
     }
+    
+    public function userData()
+    {
+        return $this->hasOne(User::class, 'id', 'user');
+    }
 
     // protected function total(): Attribute
     // {

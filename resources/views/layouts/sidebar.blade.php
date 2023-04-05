@@ -20,7 +20,7 @@
                     </li>
                 @endif
 
-                @if (doPermitted('//sales-report') || doPermitted('//rides-report'))
+                @if (doPermitted('//sales-report') || doPermitted('//rides-report')|| doPermitted('//leaderboard'))
                     <li class=" nav-item"><a href="#"><i class="
                         la la-book"></i><span
                                 class="menu-title" data-i18n="Pages">Reports</span></a>
@@ -33,6 +33,11 @@
                             @if (doPermitted('//rides-report'))
                                 <li><a class="menu-item" href="/rides-report"><i
                                             class="la la-bookmark-o"></i><span>Rides Report</span></a>
+                                </li>
+                            @endif
+                            @if (doPermitted('//leaderboard'))
+                                <li><a class="menu-item" href="/leaderboard"><i
+                                            class="la la-bicycle"></i><span>Leaderboard (Ride Wise)</span></a>
                                 </li>
                             @endif
                         </ul>

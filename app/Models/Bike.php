@@ -10,7 +10,7 @@ class Bike extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['store', 'mac_address', 'reference', 'status', 'available','lng','ltd','locked'];
+    protected $fillable = ['store', 'mac_address', 'reference', 'status', 'available', 'lng', 'ltd', 'locked'];
 
     public static $status = [1 => 'Active', 2 => 'Inactive', 3 => 'Deleted'];
 
@@ -19,9 +19,14 @@ class Bike extends Model
         return '<span class="badge badge-' . (new Colors)->getColor($record['status']) . '">' . self::$status[$record['status']] . '</span>';
     }
 
+    public static function laratablesAdditionalColumns()
+{
+    return ['ltd', 'lng'];
+}
+
     public static function laratablesCustomAction($record)
     {
-        return '<i onclick="doEdit(' . $record['id'] . ')" class="la la-edit ml1 text-warning"></i><i onclick="doDelete(' . $record['id'] . ')" class="la la-trash ml-1 text-danger"></i>';
+        return '<a target="_blank" href="https://www.google.com/maps/search/?api=1&query=' . $record['ltd'] . ',' . $record['lng'] . '"><i class="la la-map text-primary"></i></a><i onclick="doEdit(' . $record['id'] . ')" class="la la-edit ml-1 text-warning"></i><i onclick="doDelete(' . $record['id'] . ')" class="la la-trash ml-1 text-danger"></i>';
     }
 
     public static function laratablesSearchableColumns()
@@ -42,7 +47,7 @@ class Bike extends Model
     public static function laratablesQueryConditions($query)
     {
         if (Auth::user()->usertype == 1) {
-            return $query->whereIn('status', [1,2])->with('storeData');
+            return $query->whereIn('status', [1, 2])->with('storeData');
         } else {
             return $query->whereIn('status', [1, 2])->where('owner', Auth::user()->id)->with('storeData');;
         }

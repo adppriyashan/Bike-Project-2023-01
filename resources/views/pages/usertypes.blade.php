@@ -95,14 +95,12 @@
 
                                                     @foreach ($routes as $route)
                                                         <div class="col-md-12 mt-1 ml-2">
-                                                            <div class="checkbox">
+                                                            <div class="">
                                                                 <label>
                                                                     <input value="{{ $route->id }}"
-                                                                        class="permissions"
+                                                                    class="permissions_checkbox"
                                                                         id="permission{{ $route->id }}"
-                                                                        name="permissions[]" type="checkbox"
-                                                                        data-size="small" data-onstyle="success"
-                                                                        data-toggle="toggle">
+                                                                        name="permissions[]" type="checkbox">
                                                                     <small> {{ $route->name }}</small>
                                                                 </label>
                                                             </div>
@@ -187,9 +185,9 @@
                     },
                     success: function(response) {
                         $('#usertype').val(response.usertype);
-                        $('.permissions').bootstrapToggle('off');
+                        $('.permissions_checkbox').prop('checked', false);
                         response.permissionandroutesdata.forEach(permission => {
-                            $('#permission' + permission.route).bootstrapToggle('on');
+                            $('#permission' + permission.route).prop('checked', true);
                         });
                         $('#status').val(response.status);
                         $('#record').val(response.id);

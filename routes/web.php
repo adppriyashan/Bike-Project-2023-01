@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BikeController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserTypeController;
@@ -50,3 +51,8 @@ Route::prefix('/bikes')->group(function () {
     Route::get('/get', [BikeController::class, 'getOne'])->name('admin.bikes.get.one')->middleware(['auth']);
     Route::get('/delete', [BikeController::class, 'deleteOne'])->name('admin.bikes.delete.one')->middleware(['auth']);
 });
+
+Route::get('/sales-report', [ReportController::class, 'salesReport'])->name('admin.sale.report')->middleware(['auth', 'permitted']);
+Route::get('/sales-report/report', [ReportController::class, 'salesReportList'])->name('admin.sale.report.list');
+Route::get('/rides-report', [ReportController::class, 'ridesReport'])->name('admin.ride.report')->middleware(['auth', 'permitted']);
+Route::get('/leaderboard', [ReportController::class, 'leaderboardReport'])->name('admin.leaderboard.report')->middleware(['auth', 'permitted']);
