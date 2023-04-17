@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->float('distance');
             $table->enum('usertype',[1,2,3])->default(3);
             $table->enum('status',array_keys(User::$status))->default(1);
             $table->rememberToken();

@@ -20,9 +20,9 @@ class Bike extends Model
     }
 
     public static function laratablesAdditionalColumns()
-{
-    return ['ltd', 'lng'];
-}
+    {
+        return ['ltd', 'lng'];
+    }
 
     public static function laratablesCustomAction($record)
     {
@@ -49,7 +49,7 @@ class Bike extends Model
         if (Auth::user()->usertype == 1) {
             return $query->whereIn('status', [1, 2])->with('storeData');
         } else {
-            return $query->whereIn('status', [1, 2])->where('owner', Auth::user()->id)->with('storeData');;
+            return $query->whereIn('status', [1, 2])->wherein('store',  Store::where('status', 1)->where('owner', Auth::user()->id)->pluck('id')->toArray())->with('storeData');;
         }
     }
 }
