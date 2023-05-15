@@ -10,13 +10,25 @@ class Bike extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['store', 'mac_address', 'reference', 'status', 'available', 'lng', 'ltd', 'locked'];
+    protected $fillable = ['store', 'mac_address', 'reference', 'status', 'available', 'lng', 'ltd', 'locked', 'intensity', 'temperature', 'humidity', 'air_quality', 'rainy', 'waterlevel'];
 
     public static $status = [1 => 'Active', 2 => 'Inactive', 3 => 'Deleted'];
+    public static $rainy = ['Not Rainy', 'Rainy'];
+    public static $waterlevel = ['Flood Not Detected', 'Flood Detected'];
 
     public static function laratablesStatus($record)
     {
         return '<span class="badge badge-' . (new Colors)->getColor($record['status']) . '">' . self::$status[$record['status']] . '</span>';
+    }
+
+    public static function laratablesRainy($record)
+    {
+        return '<span class="badge badge-' . (new Colors)->getColor($record['rainy'] + 1) . '">' . self::$rainy[$record['rainy']] . '</span>';
+    }
+
+    public static function laratablesWaterlevel($record)
+    {
+        return '<span class="badge badge-' . (new Colors)->getColor($record['waterlevel'] + 1) . '">' . self::$waterlevel[$record['waterlevel']] . '</span>';
     }
 
     public static function laratablesAdditionalColumns()

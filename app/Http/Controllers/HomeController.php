@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class HomeController extends Controller
 {
@@ -35,6 +36,22 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $reservationCount = 0;
+        $weather = 0;
+
+        //Reservation http request
+        $reservationCount = Http::get('https://testserver.aries.lk/test')->body();
+
+        //weather http request
+        $bike = Bike::where('mac_address', '1232SDDK2K3M3M')->first();
+        if ($bike) {
+            $weather = Http::get('https://testserver.aries.lk/test', [
+                'temperature' => $bike->temperature,
+                'humidity' => $bike->humidity,
+                'air_quality' => $bike->air_quality,
+            ])->body();
+        }
+
         $ridesAvailability = [0, 0];
         $ridesReservations = [];
 
@@ -48,7 +65,7 @@ class HomeController extends Controller
 
         foreach (Reservations::where('status', 2)->where('is_paid', 1)->get() as $key => $value) {
 
-            $date=Carbon::parse($value->ride_at)->format('Y-m-d');
+            $date = Carbon::parse($value->ride_at)->format('Y-m-d');
 
             if (array_key_exists($date, $ridesReservations)) {
                 $ridesReservations[$date] = $ridesReservations[$date] + (float)$value->total;
@@ -60,6 +77,6 @@ class HomeController extends Controller
         $ridesReservationsDates = array_keys($ridesReservations);
         $ridesReservations = array_values($ridesReservations);
 
-        return view('home', compact('ridesAvailability', 'ridesReservationsDates', 'ridesReservations'));
+        return view('home', compact('ridesAvailability', 'ridesReservationsDates', 'ridesReservations', 'reservationCount', 'weather'));
     }
 }

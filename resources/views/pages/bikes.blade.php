@@ -32,6 +32,8 @@
                                                     <th>Store</th>
                                                     <th>Reference</th>
                                                     <th>Mac Address</th>
+                                                    <th>Rainy Alert</th>
+                                                    <th>Water Level Alert</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -176,6 +178,16 @@
                 },
                 {
                     name: 'mac_address'
+                },
+                {
+                    name: 'rainy',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    name: 'waterlevel',
+                    orderable: false,
+                    searchable: false
                 },
                 {
                     name: 'status',

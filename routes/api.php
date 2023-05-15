@@ -26,6 +26,7 @@ Route::prefix('/reservation')->group(function () {
 });
 Route::prefix('/mapping')->group(function () {
     Route::get('/record/{mac}/{lng}/{ltd}/{reservation}', [MappingController::class, 'mapData']);
+    Route::get('/factors/{mac}/{intensity}/{temperature}/{humidity}/{air_quality}/{rainy}/{waterlevel}', [MappingController::class, 'factorData']);
 });
 Route::prefix('/user')->group(function () {
     Route::get('/leaderboard', [UserController::class, 'getLeaderBoard']);

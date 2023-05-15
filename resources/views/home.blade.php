@@ -10,6 +10,24 @@
             </div>
             <div class="content-body">
                 <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6>Reservation Count</h6>
+                                <h4>{{ $reservationCount }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6>Weather</h6>
+                                <h4>{{ $weather }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-4">
                         <div class="card fill">
                             <div class="card-header">
@@ -59,9 +77,9 @@
     <div class="drag-target"></div>
 
     <script>
-        let ridesAvailability=@json($ridesAvailability);
-        let ridesReservations=@json($ridesReservations);
-        let ridesReservationsDates=@json($ridesReservationsDates);
+        let ridesAvailability = @json($ridesAvailability);
+        let ridesReservations = @json($ridesReservations);
+        let ridesReservationsDates = @json($ridesReservationsDates);
     </script>
 
     @include('layouts.footer')
